@@ -73,7 +73,7 @@ app.post("/api/resetgame", (req, res) => {
 app.post("/api/startgame", (req, res) => {
   numberOfMines = req.body.numberOfMines;
   betAmount = req.body.betAmount;
-  if(betAmount > wallet) return res.json({"message":"betting amount can't be higher than wallet amount!"});
+  if(betAmount > wallet) return res.json({"message":"betting amount can't be higher than wallet amount!", isGameRunning: false});
   wallet -= betAmount;
   setMines();
   isGameRunning = true;
@@ -122,6 +122,16 @@ app.post("/api/addCashOutToWallet", (req, res)=>{
 
   res.json({updatedWallet: wallet});
 });
+
+app.post("/api/addMoneyTowallet", (req, res)=>{
+  const addCashAmount = req.body.addCashAmount;
+  wallet+=addCashAmount;
+
+  return res.json({
+    "message": "added money to wallet",
+    "updatedWalletAmount": wallet
+  });
+})
 
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);
